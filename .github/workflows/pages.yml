@@ -21,14 +21,10 @@ jobs:
             jupyter nbconvert --to html --output-dir files/notebooks_html "$nb"
           done
 
-      # Index-Seiten erzeugen
-      - name: Generate directory listings
-        uses: jayant525/github-pages-directory-listing@v4
-        with:
-          FOLDER: files
-          TITLE: "Index of /files"
-          SHOWMODDATE: "true"
-          SHOWSIZE: "true"
+      # Index-Seiten erzeugen (Shell-Lösung statt fehlerhafte Action)
+      - name: Generiere Verzeichnisliste
+        run: |
+          ls -lhR files > files/index.txt
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
