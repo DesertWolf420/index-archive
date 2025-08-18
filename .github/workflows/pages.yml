@@ -1,4 +1,5 @@
 name: Build directory indexes
+
 on:
   push:
     branches: [ main ]
@@ -16,13 +17,13 @@ jobs:
           pip install --quiet jupyter nbconvert
           mkdir -p files/notebooks_html
           shopt -s nullglob
-          for nb in files/notebooks/*.ipynb; do
+          for nb in files/*.ipynb; do
             jupyter nbconvert --to html --output-dir files/notebooks_html "$nb"
           done
 
-      # Statische Index-Seiten erzeugen
+      # Index-Seiten erzeugen
       - name: Generate directory listings
-        uses: jayanta525/github-pages-directory-listing@v4
+        uses: jayant525/github-pages-directory-listing@v4
         with:
           FOLDER: files
           TITLE: "Index of /files"
@@ -41,6 +42,9 @@ jobs:
       id-token: write
     environment:
       name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/deploy-pages@v4
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
