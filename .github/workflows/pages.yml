@@ -1,0 +1,46 @@
+name: Build directory indexes
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Optional: ipynb -> HTML
+      - name: Convert ipynb to HTML
+        run: |
+          pip install --quiet jupyter nbconvert
+          mkdir -p files/notebooks_html
+          shopt -s nullglob
+          for nb in files/notebooks/*.ipynb; do
+            jupyter nbconvert --to html --output-dir files/notebooks_html "$nb"
+          done
+
+      # Statische Index-Seiten erzeugen
+      - name: Generate directory listings
+        uses: jayanta525/github-pages-directory-listing@v4
+        with:
+          FOLDER: .
+          TITLE: "Index of (root)"
+          SHOWMODDATE: "true"
+          SHOWSIZE: "true"
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/deploy-pages@v4
