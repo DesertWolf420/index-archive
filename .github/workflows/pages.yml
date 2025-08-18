@@ -24,7 +24,7 @@ jobs:
       - name: Generate directory listings
         uses: jayanta525/github-pages-directory-listing@v4
         with:
-          FOLDER: .
+          FOLDER: flies
           TITLE: "Index of (root)"
           SHOWMODDATE: "true"
           SHOWSIZE: "true"
