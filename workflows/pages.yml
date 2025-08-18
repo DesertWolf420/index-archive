@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # optional: ipynb -> HTML
+      # Optional: ipynb -> HTML
       - name: Convert ipynb to HTML
         run: |
           pip install --quiet jupyter nbconvert
@@ -20,11 +20,11 @@ jobs:
             jupyter nbconvert --to html --output-dir files/notebooks_html "$nb"
           done
 
-      # statische Indexseiten erzeugen
+      # Statische Index-Seiten erzeugen
       - name: Generate directory listings
         uses: jayanta525/github-pages-directory-listing@v4
         with:
-          FOLDER: .
+          FOLDER: flies
           TITLE: "Index of (root)"
           SHOWMODDATE: "true"
           SHOWSIZE: "true"
