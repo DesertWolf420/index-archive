@@ -1,2 +1,4 @@
-# index-archive
-Einfaches Index-Archiv für PDFs &amp; Notebooks
+# GitHub Pages Index Archiv
+
+Dies ist ein einfaches Beispiel für ein Archiv mit PDF- und Notebook-Dateien.
+
