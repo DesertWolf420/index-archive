@@ -21,7 +21,7 @@ jobs:
             jupyter nbconvert --to html --output-dir files/notebooks_html "$nb"
           done
 
-      # Automatisch generierte index.html mit PDFs und Notebooks
+      # Automatisch generierte index.html mit Links zu PDFs und Notebooks
       - name: Generiere index.html mit Links zu PDFs und Notebooks
         run: |
           echo "<!DOCTYPE html>
@@ -35,7 +35,7 @@ jobs:
             <p>Willkommen! Hier findest du meine gesammelten Dateien:</p>
             <h2>PDFs</h2>
             <ul>" > index.html
-          for f in pdf/*.pdf; do
+          for f in files/pdf/*.pdf; do
             [ -e "$f" ] && echo "<li><a href=\"$f\">$(basename "$f")</a></li>" >> index.html
           done
           echo "</ul>
