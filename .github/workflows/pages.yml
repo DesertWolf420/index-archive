@@ -21,8 +21,38 @@ jobs:
             jupyter nbconvert --to html --output-dir files/notebooks_html "$nb"
           done
 
-      # Index-Seiten erzeugen (Shell-Lösung statt fehlerhafte Action)
-      - name: Generiere Verzeichnisliste
+      # Automatisch generierte index.html mit PDFs und Notebooks
+      - name: Generiere index.html mit Links zu PDFs und Notebooks
+        run: |
+          echo "<!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset=\"UTF-8\">
+            <title>📂 Mein Dokumenten-Archiv</title>
+          </head>
+          <body>
+            <h1>📂 Mein Dokumenten-Archiv</h1>
+            <p>Willkommen! Hier findest du meine gesammelten Dateien:</p>
+            <h2>PDFs</h2>
+            <ul>" > index.html
+          for f in pdf/*.pdf; do
+            [ -e "$f" ] && echo "<li><a href=\"$f\">$(basename "$f")</a></li>" >> index.html
+          done
+          echo "</ul>
+            <h2>Jupyter Notebooks</h2>
+            <ul>" >> index.html
+          for f in files/*.ipynb; do
+            [ -e "$f" ] && echo "<li><a href=\"$f\">$(basename "$f")</a></li>" >> index.html
+          done
+          for f in files/notebooks_html/*.html; do
+            [ -e "$f" ] && echo "<li><a href=\"$f\">$(basename "$f") (HTML)</a></li>" >> index.html
+          done
+          echo "</ul>
+          </body>
+          </html>" >> index.html
+
+      # Generiere Verzeichnisliste als Text (optional)
+      - name: Generiere Verzeichnisliste als index.txt
         run: |
           ls -lhR files > files/index.txt
 
